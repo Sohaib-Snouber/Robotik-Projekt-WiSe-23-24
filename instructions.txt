@@ -1,0 +1,214 @@
+// creating cmakelist and package files to a package write this :
+$ catkin_create_pkg --rosdistro noetic -s roscpp gemetry_msgs std_msgs -l BSD -m email -a username package_name
+// installing dependencies
+$ rosdep install turtlesim
+------------------------------------------------------
+// yaml files 
+------------------------------------------------------
+// the Network congiguration look like the following:
+// the ROS_MASTER_URI=https//192.168.0.100:11311
+// and the ROS_HOSTNAME=192.168.0.100
+----------------------------------------------------
+// to work on raspberry pi from your pc
+$ ssh ubuntu@{IP Address of Raspberry PI}
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ wget https://raw.githubusercontent.com/ROBOTIS-GIT/robotis_tools/master/install_ros_noetic_rpi.sh
+$ chmod 755 ./install_ros_noetic_rpi.sh
+$ bash ./install_ros_noetic_rpi.sh
+$ sudo apt install ros-noetic-rosserial-python ros-noetic-tf
+$ sudo apt install ros-noetic-hls-lfcd-lds-driver
+$ sudo apt install ros-noetic-turtlebot3-msgs
+$ sudo apt install ros-noetic-dynamixel-sdk
+$ cd ~/catkin_ws/src
+$ git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
+$ cd ~/catkin_ws/src/turtlebot3
+$ rm -r turtlebot3_description/ turtlebot3_teleop/ turtlebot3_navigation/ turtlebot3_slam/ turtlebot3_example/
+$ cd ~/catkin_ws/
+$ catkin_make -j1
+$ source ~/.bashrc
+$ rosrun turtlebot3_bringup create_udev_rules
+$ nano ~/.bashrc
+//export ROS_MASTER_URI=http://{IP_ADDRESS_OF_REMOTE_PC}:11311
+//export ROS_HOSTNAME={IP_ADDRESS_OF_RASPBERRY_PI_3}
+---------------------------------------------
+// LDS configuration on Raspberry Pi:
+$ sudo apt update
+$ sudo apt install libudev-dev
+$ cd ~/catkin_ws/src
+$ git clone -b develop https://github.com/ROBOTIS-GIT/ld08_driver.git
+$ cd ~/catkin_ws && catkin_make
+$ echo 'export LDS_MODEL=LDS-01' >> ~/.bashrc
+$ source ~/.bashrc
+----------------------------------------------
+//Rasberry Pi Camera Parameters 
+image_width: 960
+image_height: 720
+camera_name: prosilica
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [851.145803, 0, 461.363994, 0, 853.429128, 362.519977, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.092257, -0.273373, 0.000333, -0.000435, 0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [851.424927, 0, 459.501626, 0, 0, 858.864563, 362.178221, 0, 0, 0, 1, 0]
+
+-----------------------------------------------
+ROS_NAMESPACE=raspicam_node rosrun image_proc image_proc image_raw:=image _queue_size:=10
+///////////////////////////////////////////
+
+
+schritte sollen gemacht werden um dein Workspace im Lage sein, laufen zu koennen:
+in diesem Beispiel mein catkin_ws steht in Desktop falls anders dann sollte das angepasst werden:
+ubuntu@ubuntu:~/Desktop/catkin_ws$ source ~/Desktop/catkin_ws/devel/setup.bash
+ubuntu@ubuntu:~/Desktop/catkin_ws$ echo "source ~/Desktop/catkin_ws/devel/setup.bash" >> ~/.bashrc
+ubuntu@ubuntu:~/Desktop/catkin_ws$ source ~/.bashrc
+
+///////////////////////////////////////////////////////////////
+
+
+manchmal konnen die installationen von ROS und opencv und andere Libraraies nicht direct in dein Code 
+verwendet werden (alle include), besonders in visual studio code. da brauchst du in die Konfigurationen des c_cpp_properties.json datei, 
+die steh in .vscode direktory wie folgend:
+
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/opencv4",
+                "/opt/ros/noetic/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+
+
+//////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**** Calibrating ****
+mono pinhole calibration...
+D = [0.07753224603887068, -0.16784127100307114, 0.002296540584561568, 0.0016246508112774485, 0.0]
+K = [846.3299667778492, 0.0, 484.64291839114077, 0.0, 849.8903587888743, 363.0736508154193, 0.0, 0.0, 1.0]
+R = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P = [852.0324096679688, 0.0, 485.58010602402646, 0.0, 0.0, 856.9440307617188, 363.75610541300375, 0.0, 0.0, 0.0, 1.0, 0.0]
+None
+# oST version 5.0 parameters
+
+
+[image]
+
+width
+960
+
+height
+720
+
+[narrow_stereo]
+
+camera matrix
+846.329967 0.000000 484.642918
+0.000000 849.890359 363.073651
+0.000000 0.000000 1.000000
+
+distortion
+0.077532 -0.167841 0.002297 0.001625 0.000000
+
+rectification
+1.000000 0.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 0.000000 1.000000
+
+projection
+852.032410 0.000000 485.580106 0.000000
+0.000000 856.944031 363.756105 0.000000
+0.000000 0.000000 1.000000 0.000000
+
+('Wrote calibration data to', '/tmp/calibrationdata.tar.gz')
+Exception in thread Thread-5:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/home/ubuntu/catkin_ws/src/image_pipeline/camera_calibration/src/camera_calibration/camera_calibrator.py", line 107, in run
+    self.function(m)
+  File "/home/ubuntu/catkin_ws/src/image_pipeline/camera_calibration/src/camera_calibration/camera_calibrator.py", line 188, in handle_monocular
+    drawable = self.c.handle_msg(msg)
+  File "/home/ubuntu/catkin_ws/src/image_pipeline/camera_calibration/src/camera_calibration/calibrator.py", line 975, in handle_msg
+    undistorted = self.undistort_points(corners)
+  File "/home/ubuntu/catkin_ws/src/image_pipeline/camera_calibration/src/camera_calibration/calibrator.py", line 856, in undistort_points
+    return cv2.fisheye.undistortPoints(src, self.intrinsics, self.distortion, R = self.R, P = self.P)
+cv2.error: OpenCV(4.2.0) ../modules/calib3d/src/fisheye.cpp:331: error: (-215:Assertion failed) D.total() == 4 && K.size() == Size(3, 3) && (K.depth() == CV_32F || K.depth() == CV_64F) in function 'undistortPoints'
+
+**** Calibrating ****
+mono fisheye calibration...
+D = [0.0, 0.0, 0.0, 0.0]
+K = [305.5774907364391, 0.0, 479.5, 0.0, 305.5774907364391, 359.5, 0.0, 0.0, 1.0]
+R = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P = [305.5774907364391, 0.0, 479.5, 0.0, 0.0, 305.5774907364391, 359.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+None
+# oST version 5.0 parameters
+
+
+[image]
+
+width
+960
+
+height
+720
+
+[narrow_stereo]
+
+camera matrix
+305.577491 0.000000 479.500000
+0.000000 305.577491 359.500000
+0.000000 0.000000 1.000000
+
+distortion
+0.000000 0.000000 0.000000 0.000000
+
+rectification
+1.000000 0.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 0.000000 1.000000
+
+projection
+305.577491 0.000000 479.500000 0.000000
+0.000000 305.577491 359.500000 0.000000
+0.000000 0.000000 1.000000 0.000000

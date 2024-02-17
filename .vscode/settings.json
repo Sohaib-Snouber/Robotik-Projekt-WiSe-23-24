@@ -1,0 +1,4 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.sourceDirectory": "/home/ubuntu/Desktop/catkin_ws/src/turtlebot"
+}

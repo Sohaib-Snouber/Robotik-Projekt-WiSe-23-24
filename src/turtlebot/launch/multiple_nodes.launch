@@ -1,0 +1,16 @@
+<launch>
+  <!-- Load the transformation matrix -->
+  <rosparam file="$(find turtlebot)/config/transformation_matrix.yaml" command="load"/>
+  <!-- <rosparam command="load" file="$(find rosparam)/config/transformation_matrix.yaml" /> -->
+  <!-- Start node 1 -->
+  <node pkg="turtlebot" type="BirdEyeView" name="BEW_img_mit_LDS" output="screen"/>
+  <node pkg="turtlebot" type="FollowLine" name="drive_calc" output="screen"/>
+
+  <!--
+   //Start node 1 
+  <node pkg="image_stream" type="image_stream" name="node1" output="screen"/>
+
+  //Start node 2 
+  <node pkg="image_stream" type="image_rect" name="node2" output="screen"/>
+  -->
+</launch>
